@@ -82,15 +82,43 @@
                        th:if="${currentPage < totalPages + 1 and currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
                 </li>
                 <li th:class="${pageNumber == page.getNumber() + 1} ? 'page-item active': 'page-item'"
-                    th:if="${page.getTotalPages() > 0}" th:each="pageNumber: ${pageNumbers}">
-                        <a class="page-link"
-                           th:href="@{'/page/' + ${pageNumber}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
-                           th:text="${pageNumber}">
-                        </a>
+                    th:if="${page.getTotalPages() > 0 and page.getTotalPages() <= 5}" th:each="pageNumber: ${pageNumbers}">
+                    <a class="page-link"
+                       th:href="@{'/page/' + ${pageNumber}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                       th:text="${pageNumber}">
+                    </a>
+                </li>
+                <li class="page-item active" th:if="${page.getTotalPages() > 5 and currentPage + 2 < page.getTotalPages()}">
+                    <a class="page-link"
+                       th:href="@{'/page/' + ${currentPage}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                       th:text="${currentPage}"></a>
+                </li>
+                <li class="page-item" th:if="${page.getTotalPages() > 5 and currentPage + 3 < page.getTotalPages()}">
+                    <a class="page-link"
+                       th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                       th:text="${currentPage + 1}"></a>
+                </li>
+                <li class="page-item" th:if="${page.getTotalPages() > 5 and currentPage != page.getTotalPages() - 3}">
+                    <a class="page-link">...</a>
+                </li>
+                <li th:class="${page.getTotalPages() - 2 == currentPage ? 'page-item active': 'page-item'}" th:if="${page.getTotalPages() > 5}">
+                    <a class="page-link"
+                       th:href="@{'/page/' + ${page.getTotalPages() - 2}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                       th:text="${page.getTotalPages() - 2}"></a>
+                </li>
+                <li th:class="${page.getTotalPages() - 1 == currentPage ? 'page-item active': 'page-item'}" th:if="${page.getTotalPages() > 5}">
+                    <a class="page-link"
+                       th:href="@{'/page/' + ${page.getTotalPages() - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                       th:text="${page.getTotalPages() - 1}"></a>
                 </li>
                 <li class="page-item">
                     <a class="page-link"
-                       th:if="${currentPage < totalPages and currentPage >= 1}" th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                       th:if="${currentPage < totalPages and currentPage >= 1 and currentPage != page.getTotalPages() - 1}" th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                </li>
+                <li th:class="${page.getTotalPages() == currentPage ? 'page-item active': 'page-item'}" th:if="${page.getTotalPages() > 5 and currentPage == page.getTotalPages() - 1}">
+                    <a class="page-link"
+                       th:href="@{'/page/' + ${page.getTotalPages()}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                       th:text="${page.getTotalPages()}"></a>
                 </li>
             </ul>
         </nav>
