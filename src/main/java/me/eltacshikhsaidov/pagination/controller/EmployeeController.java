@@ -6,7 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,7 +24,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model) {
+    public String home() {
+        return "home";
+    }
+
+    @GetMapping("/employees")
+    public String employeesPage(Model model) {
         return findPaginated(1, "firstName", "asc", model);
     }
 
@@ -34,8 +42,12 @@ public class EmployeeController {
     }
 
     @PostMapping("/saveEmployee")
-    public String saveEmployee(@ModelAttribute("employee") Employee employee) {
-            employeeService.saveEmployee(employee);
+    public String saveEmployee(
+            @ModelAttribute("employee") Employee employee,
+            @RequestParam("file") MultipartFile multipartFile) {
+        String imageName = employeeService.uploadImage(multipartFile);
+        employee.setImageName(imageName);
+        employeeService.saveEmployee(employee);
         return "redirect:/";
     }
 
@@ -61,7 +73,7 @@ public class EmployeeController {
             @RequestParam("sortDir") String sortDir,
             Model model
     ) {
-        int pageSize = 1;
+        int pageSize = 2;
 
         Page<Employee> page = employeeService.findPaginated(pageNo, pageSize, sortField, sortDir);
         List<Employee> listEmployees = page.getContent();
@@ -85,6 +97,11 @@ public class EmployeeController {
 
         model.addAttribute("listEmployees", listEmployees);
 
-        return "index";
+        return "employees";
+    }
+
+    @GetMapping("/get/{imageName}")
+    public void getImageKey(@PathVariable String imageName, HttpServletResponse response) throws IOException {
+        employeeService.getFile(imageName, response);
     }
 }

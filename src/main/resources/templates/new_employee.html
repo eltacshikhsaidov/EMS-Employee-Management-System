@@ -23,33 +23,62 @@
             background-color: #e9ecef;
         }
 
+        h3{
+            margin-top: 20px;
+            text-align: center;
+        }
+
         .btn-label {position: relative;left: -12px;display: inline-block;padding: 6px 12px;background: rgba(0,0,0,0.15);border-radius: 3px 0 0 3px;}
     </style>
 </head>
 <body>
 
-<div class="jumbotron">
-    <div class="container">
-        <h1>Employee Management System</h1>
-        <hr>
-        <h2>Save Employee</h2>
-
-        <form action="#" th:action="@{/saveEmployee}" th:object="${employee}" method="POST">
-            <input type="text" th:field="*{firstName}" placeholder="Employee First Name" class="form-control mb-4 col-4">
-
-            <input type="text" th:field="*{lastName}" placeholder="Employee Last Name" class="form-control mb-4 col-4">
-
-            <input type="text" th:field="*{email}" placeholder="Employee Email" class="form-control mb-4 col-4">
-
-            <button type="submit" class="btn btn-info col-2"><span class="btn-label"><i class="far fa-check-circle"></i></span>
-                Save Employee</button>
-        </form>
-
-        <hr>
-
-        <a th:href = "@{/}" class="btn btn-success"><span class="btn-label"><i class="fas fa-long-arrow-alt-left"></i></span>
-            Back to Employee List</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">EmployeeMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/newEmployeeForm">New Employee<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/employees">All Employees</a>
+            </li>
+        </ul>
     </div>
+</nav>
+
+<h3>Add New Employee</h3>
+<div class="jumbotron">
+    <form th:action="@{/saveEmployee}" th:object="${employee}" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col">
+                <input type="text" th:field="*{firstName}" class="form-control" placeholder="First name">
+            </div>
+            <div class="col">
+                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Last name">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="exampleInputEmail1"></label>
+                <input type="email" th:field="*{email}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                <br>
+            </div>
+            <div class="col">
+                <br>
+                <div class="col">
+                    <input type="file" name="file" class="form-control">
+                </div>
+            </div>
+        </div>
+        <button type="submit" style="text-align: center" class="btn btn-primary">Add</button>
+    </form>
 </div>
 </body>
 </html>

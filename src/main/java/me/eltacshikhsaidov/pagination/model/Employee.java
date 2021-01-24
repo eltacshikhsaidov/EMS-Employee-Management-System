@@ -24,5 +24,9 @@ public class Employee {
     @Column(name = "email")
     private String email;
 
+//    ADDING EMPLOYEE IMAGE
+    @Column(name = "image")
+    private String imageName;
+
 
 }
